@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+     May 13, 2016 11:49:54 AM                                                        
+
+     project    
+     description
+                   
+     thiagoos                                                                
+     ====================================================================== -->
+<project name="project" default="default">
+	<description>
+            ant script for testing
+    </description>
+
+	<property name="build.dir"   value="build/classes"/>
+
+	<target name="clean">
+		<delete dir="build/classes/" />
+	</target>
+
+	<target name="compile">
+		<mkdir dir="build/classes" />
+		<javac includeantruntime="true" srcdir="src" destdir="${build.dir}" />
+	</target>
+
+	<target name="jar">
+		<mkdir dir="build/jar" />
+
+		<jar destfile="build/jar/anttest.jar" update="true">
+			<manifest>
+				<attribute name="Main-Class" value="testes.AntTest" />
+			</manifest>
+			<fileset dir="build/classes">
+				<include name="testes/*.class" />
+				<include name="testA/*.class" />
+			</fileset>
+		</jar>
+
+		<jar destfile="build/jar/anttest2.jar" update="true">
+			<manifest>
+				<attribute name="Main-Class" value="testes2.AntTest2" />
+			</manifest>
+			<fileset dir="build/classes">
+				<include name="testes2/*.class" />
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="run">
+		<java jar="build/jar/anttest.jar" fork="true" />
+		<java jar="build/jar/anttest2.jar" fork="true" />
+	</target>
+
+	<target name="startup">
+		<echo>***************************************</echo>
+		<echo>******* starting ant build ************</echo>
+		<echo>***************************************</echo>
+	</target>
+
+	<target name="default" description="description" depends="startup,clean,compile,jar,run,copy">
+		<echo>***************************************</echo>
+		<echo>******* finished ant build ************</echo>
+		<echo>***************************************</echo>
+	</target>
+
+	<target name="copy" description="copy jar teste2 to somewhere">
+		<echo>copying... be patient</echo>
+		<copy file="build/jar/anttest2.jar" todir="c:/temp/">
+		</copy>
+		<echo>finished copy</echo>
+	</target>
+
+</project>
